@@ -61,7 +61,7 @@ var displayWeather = function (weather, location) {
   );
   var temp = createDivEl(
     "bg-white p-2 m-2 rounded w-50 fs-1",
-    "<i class='bi bi-thermometer-half'></i>" + weather.current.temp
+    "<i class='bi bi-thermometer-half'></i>" + Math.round(weather.current.temp)
   );
   var details = createDivEl("d-flex flex-row justify-content-around", "");
   var wind = createDivEl(
@@ -81,19 +81,22 @@ var displayWeather = function (weather, location) {
 
   var hourly = createDivEl("d-flex flex-row justify-content-around", "")
 
-  for (var i = 1; i < 11; i++) {
+  for (var i = 1; i < 9; i++) {
+      console.log(weather.hourly[i])
     var forecastHour = createDivEl("bg-white p-2 m-2 rounded");
 
     var timeStamp = new Date(weather.hourly[i].dt * 1000);
     var hour = timeStamp.getHours();
 
+    var hourlyTemp = Math.round(weather.hourly[i].temp)
+
     if (hour <= 12) {
-      var displayTime = hour + " AM";
+      var displayTime = hour + "AM";
     } else if (hour > 12) {
-      var displayTime = hour - 12 + " PM";
+      var displayTime = hour - 12 + "PM";
     }
 
-    forecastHour.textContent = displayTime;
+    forecastHour.innerHTML = displayTime + "<i class='bi bi-thermometer-half'></i>" + hourlyTemp;
 
     hourly.appendChild(forecastHour);
   }
@@ -114,15 +117,15 @@ var displayForecast = function (weather) {
   var daily = createDivEl("d-flex flex-row justify-content-around","")
 
   for (var i = 1; i < 6; i++) {
-      console.log(weather.daily[i])
     var forecastDay = createDivEl("bg-white rounded p-3 m-2")
 
     var dayStamp = new Date(weather.daily[i].dt * 1000);
     var day = dayStamp.getDate();
 
     var dailyTemp = Math.round(weather.daily[i].temp.min) + " - "+ Math.round(weather.daily[i].temp.max)
+    var dailyHumidity = weather.daily[i].humidity
 
-    forecastDay.innerHTML = day + "</br><i class='bi bi-thermometer-half'></i>"+  dailyTemp;
+    forecastDay.innerHTML = day + "</br><i class='bi bi-thermometer-half'></i>"+  dailyTemp + "</br><i class='bi bi-moisture'></i> " + dailyHumidity;
 
     daily.appendChild(forecastDay);
   }
