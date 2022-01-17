@@ -3,6 +3,7 @@ var cityInputEl = document.querySelector("#location");
 var dayDisplay = document.querySelector("#currentDay");
 var todayEl = document.querySelector("#today");
 var forecastEl = document.querySelector("#forecast");
+var previousCities = document.querySelector("#previous-cities");
 
 dayDisplay.textContent = moment().format("MMM Do YY");
 
@@ -17,6 +18,7 @@ var getCoordinates = function (location) {
     if (response.ok) {
       response.json().then(function (data) {
         searchWeather(data.coord.lon, data.coord.lat, data.name);
+        saveCity(data.coord.lon, data.coord.lat, data.name);
       });
     } else {
       alert("Sorry, I did not recognize that city.");
@@ -154,7 +156,7 @@ var displayWeather = function (weather, location) {
   );
 
   for (var i = 1; i < 9; i++) {
-    console.log(hourly[i].weather[0].id);
+    // console.log(hourly[i].weather[0].id);
     var forecastHour = createDivEl("bg-white p-2 m-2 rounded");
 
     var timeStamp = new Date(hourly[i].dt * 1000);
@@ -162,7 +164,6 @@ var displayWeather = function (weather, location) {
 
     nightDay = nightOrDay(sunrise, sunset, hourly[i].dt);
     icon = weatherIcon(hourly[i].weather[0].id, nightDay);
-    console.log(icon);
 
     var hourlyTemp = Math.round(hourly[i].temp);
 
@@ -199,8 +200,11 @@ var displayWeather = function (weather, location) {
 // ===========DISPLAY 5 DAY FORECAST================
 
 var displayForecast = function (weather) {
-    var daily = weather.daily
-  var dailyContainer = createDivEl("d-flex flex-row justify-content-around", "");
+  var daily = weather.daily;
+  var dailyContainer = createDivEl(
+    "d-flex flex-row justify-content-around",
+    ""
+  );
 
   for (var i = 1; i < 6; i++) {
     var forecastDay = createDivEl("bg-white rounded p-3 m-2");
@@ -209,9 +213,7 @@ var displayForecast = function (weather) {
     var day = dayStamp.getDate();
 
     var dailyTemp =
-      Math.round(daily[i].temp.min) +
-      " - " +
-      Math.round(daily[i].temp.max);
+      Math.round(daily[i].temp.min) + " - " + Math.round(daily[i].temp.max);
     var dailyHumidity = daily[i].humidity;
 
     forecastDay.innerHTML =
@@ -249,7 +251,29 @@ var formSubmitHandler = function (event) {
 
 // ============SAVE CITY INFO===============
 
+var saveCity = function (long, lat, location) {
+  var newCity = createDivEl("bg-info p-3 fs-3 text-center mt-1 mb-1");
+  newCity.setAttribute("data-long", long);
+  newCity.setAttribute("data-lat", lat);
+  newCity.textContent = location;
+  previousCities.appendChild(newCity);
+};
+
+// ==========================================================
+
+// ============SAVE CITY INFO===============
+
+var cityClickHandler = function (event) {
+  var long = event.target.getAttribute("data-long");
+  var lat = event.target.getAttribute("data-lat");
+  var city = event.target.textContent;
+  todayEl.textContent = "";
+  forecastEl.textContent = "";
+  searchWeather(long, lat, city);
+};
+
 // ==========================================================
 
 cityFormEl.addEventListener("submit", formSubmitHandler);
+previousCities.addEventListener("click", cityClickHandler);
 // getCoordinates("atlanta");
