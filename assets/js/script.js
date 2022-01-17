@@ -90,6 +90,7 @@ var weatherIcon = function (id, nightDay) {
   } else if (id === 511) {
     icon = snow;
   } else if (id >= 600 && id < 700) {
+    icon = snow;
   } else if (id >= 700 && id < 800) {
     icon = haze;
   } else if (id === 800) {
@@ -208,7 +209,6 @@ var displayForecast = function (weather) {
 
   for (var i = 1; i < 6; i++) {
     var forecastDay = createDivEl("bg-white rounded p-3 m-2");
-
     var dayStamp = new Date(daily[i].dt * 1000);
     var day = dayStamp.getDate();
 
@@ -216,8 +216,14 @@ var displayForecast = function (weather) {
       Math.round(daily[i].temp.min) + " - " + Math.round(daily[i].temp.max);
     var dailyHumidity = daily[i].humidity;
 
+    console.log(daily[i].weather[0].id);
+    icon = weatherIcon(daily[i].weather[0].id, 1);
+    console.log(icon);
+
     forecastDay.innerHTML =
       day +
+      "</br>" +
+      icon +
       "</br><i class='bi bi-thermometer-half'></i>" +
       dailyTemp +
       "</br><i class='bi bi-moisture'></i> " +
