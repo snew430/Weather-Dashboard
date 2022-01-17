@@ -297,4 +297,3 @@ var cityClickHandler = function (event) {
 
 cityFormEl.addEventListener("submit", formSubmitHandler);
 previousCities.addEventListener("click", cityClickHandler);
-getCoordinates("atlanta");
