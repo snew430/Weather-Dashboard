@@ -1,3 +1,40 @@
-.form-babel, .form-input.btn{
-    width: 100%;
+.form-babel,
+.form-input.btn {
+  width: 100%;
+}
+body {
+  background-color: rgb(242, 242, 242);
+}
+header {
+  background-image: linear-gradient(rgb(250, 250, 217), rgb(180, 206, 245));
+}
+
+#today {
+  border-radius: 5%;
+}
+
+.day {
+  background-color: skyblue;
+  background-image: linear-gradient(rgb(156, 217, 250), rgb(254, 252, 209));
+  color: black;
+}
+
+.night {
+  background-color: skyblue;
+  background-image: linear-gradient(rgb(49, 55, 58), rgb(155, 155, 155));
+  color: white;
+}
+
+.previous,
+.btn {
+  background-image: repeating-linear-gradient(
+    rgb(157, 240, 201),
+    rgb(167, 238, 245) 80%
+  );
+  cursor: pointer;
+}
+
+.tile {
+  border: rgb(155, 155, 155) solid 1px;
+  color: rgb(0, 0, 0);
 }

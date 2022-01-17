@@ -122,34 +122,49 @@ var displayWeather = function (weather, location) {
   var sunset = weather.current.sunset;
   var nightDay = nightOrDay(sunrise, sunset, current.dt);
 
+  if ((nightDay = 0)) {
+    todayEl.classList = "mb-3 d-flex flex-column align-items-center night";
+  } else {
+    todayEl.classList = "mb-3 d-flex flex-column align-items-center day";
+  }
+
   // pass which icon to use
   var icon = weatherIcon(current.weather[0].id, nightDay);
 
-  console.log(current);
-
   var city = createDivEl(
-    "bg-white p-2 m-2 w-75 rounded fs-1",
+    "p-2 m-2 w-75 rounded fs-1",
     "<i class='bi bi-geo-alt'></i>" + location + "  " + icon
   );
   var temp = createDivEl(
-    "bg-white p-2 m-2 rounded w-50 fs-1",
+    "p-2 m-2 rounded w-50 fs-1",
     "<i class='bi bi-thermometer-half'></i>" + Math.round(current.temp)
   );
-  var details = createDivEl("d-flex flex-row justify-content-around", "");
+  var details = createDivEl("d-flex flex-row justify-content-around w-100", "");
+
   var wind = createDivEl(
-    "bg-white p-2 m-2 rounded fs-3",
-    "<i class='bi bi-wind'></i></br>" + current.wind_speed
+    "p-2 m-2 rounded fs-3",
+    "<i class='bi bi-wind'></i>   " + current.wind_speed
   );
 
   var humidity = createDivEl(
-    "bg-white p-2 rounded fs-3",
-    "<i class='bi bi-moisture'></i></br>" + current.humidity
+    "p-2 rounded fs-3",
+    "<i class='bi bi-moisture'></i>   " + current.humidity
   );
 
   var uv = createDivEl(
-    "bg-white p-2 m-2 rounded fs-3",
-    "<i class='bi bi-rainbow'></i></br>" + current.uvi
+    "p-2 m-2 rounded fs-3 border",
+    "<i class='bi bi-rainbow'></i>   " + current.uvi
   );
+
+  if (current.uvi < 3) {
+    uv.classList.add("border-success");
+  } else if (current.uvi >= 3 && current.uvi < 6) {
+    uv.classList.add("border-warning");
+  } else if (current.uvi >= 6 && current.uvi < 8) {
+    uv.classList.add("border-danger");
+  } else if (current.uvi >= 3 && current.uvi < 6) {
+    uv.classList.add("bg-warning");
+  }
 
   var hourlyContainer = createDivEl(
     "d-flex flex-row justify-content-around",
@@ -157,8 +172,7 @@ var displayWeather = function (weather, location) {
   );
 
   for (var i = 1; i < 9; i++) {
-    // console.log(hourly[i].weather[0].id);
-    var forecastHour = createDivEl("bg-white p-2 m-2 rounded");
+    var forecastHour = createDivEl("p-2 m-2 rounded text-dark");
 
     var timeStamp = new Date(hourly[i].dt * 1000);
     var hour = timeStamp.getHours();
@@ -203,22 +217,21 @@ var displayWeather = function (weather, location) {
 var displayForecast = function (weather) {
   var daily = weather.daily;
   var dailyContainer = createDivEl(
-    "d-flex flex-row justify-content-around",
+    "d-flex flex-row justify-content-around day",
     ""
   );
 
   for (var i = 1; i < 6; i++) {
-    var forecastDay = createDivEl("bg-white rounded p-3 m-2");
+    var forecastDay = createDivEl("rounded p-3 m-2 tile");
     var dayStamp = new Date(daily[i].dt * 1000);
     var day = dayStamp.getDate();
 
     var dailyTemp =
       Math.round(daily[i].temp.min) + " - " + Math.round(daily[i].temp.max);
+    var dailyWind = daily[i].wind_speed;
     var dailyHumidity = daily[i].humidity;
 
-    console.log(daily[i].weather[0].id);
     icon = weatherIcon(daily[i].weather[0].id, 1);
-    console.log(icon);
 
     forecastDay.innerHTML =
       day +
@@ -226,6 +239,8 @@ var displayForecast = function (weather) {
       icon +
       "</br><i class='bi bi-thermometer-half'></i>" +
       dailyTemp +
+      "</br><i class='bi bi-wind'></i> " +
+      dailyWind +
       "</br><i class='bi bi-moisture'></i> " +
       dailyHumidity;
 
@@ -258,7 +273,7 @@ var formSubmitHandler = function (event) {
 // ============SAVE CITY INFO===============
 
 var saveCity = function (long, lat, location) {
-  var newCity = createDivEl("bg-info p-3 fs-3 text-center mt-1 mb-1");
+  var newCity = createDivEl("bg-info p-3 fs-3 text-center mt-1 mb-1 previous");
   newCity.setAttribute("data-long", long);
   newCity.setAttribute("data-lat", lat);
   newCity.textContent = location;
@@ -282,4 +297,4 @@ var cityClickHandler = function (event) {
 
 cityFormEl.addEventListener("submit", formSubmitHandler);
 previousCities.addEventListener("click", cityClickHandler);
-// getCoordinates("atlanta");
+getCoordinates("atlanta");
