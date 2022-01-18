@@ -36,5 +36,5 @@ header {
 
 .tile {
   border: rgb(155, 155, 155) solid 1px;
-  color: rgb(0, 0, 0);
+  /* color: rgb(0, 0, 0); */
 }

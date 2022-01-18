@@ -122,10 +122,11 @@ var displayWeather = function (weather, location) {
   var sunset = weather.current.sunset;
   var nightDay = nightOrDay(sunrise, sunset, current.dt);
 
-  if ((nightDay = 0)) {
-    todayEl.classList = "mb-3 d-flex flex-column align-items-center night";
+  console.log(nightDay);
+  if (nightDay === 0) {
+    todayEl.classList.add("night");
   } else {
-    todayEl.classList = "mb-3 d-flex flex-column align-items-center day";
+    todayEl.classList.add("day");
   }
 
   // pass which icon to use
@@ -172,7 +173,7 @@ var displayWeather = function (weather, location) {
   );
 
   for (var i = 1; i < 9; i++) {
-    var forecastHour = createDivEl("p-2 m-2 rounded text-dark");
+    var forecastHour = createDivEl("p-2 m-2 rounded");
 
     var timeStamp = new Date(hourly[i].dt * 1000);
     var hour = timeStamp.getHours();
@@ -181,11 +182,14 @@ var displayWeather = function (weather, location) {
     icon = weatherIcon(hourly[i].weather[0].id, nightDay);
 
     var hourlyTemp = Math.round(hourly[i].temp);
-
-    if (hour <= 12) {
+    console.log(hour);
+    
+    if (hour > 0 && hour < 12) {
       var displayTime = hour + "AM";
-    } else if (hour > 12) {
+    } else if (hour >= 12) {
       var displayTime = hour - 12 + "PM";
+    } else if (hour === 0) {
+      var displayTime = "12AM";
     }
 
     forecastHour.innerHTML =
@@ -207,19 +211,26 @@ var displayWeather = function (weather, location) {
   todayEl.appendChild(details);
   todayEl.appendChild(hourlyContainer);
 
-  displayForecast(weather);
+  displayForecast(weather, nightDay);
 };
 
 // ==========================================================
 
 // ===========DISPLAY 5 DAY FORECAST================
 
-var displayForecast = function (weather) {
+var displayForecast = function (weather, nightDay) {
   var daily = weather.daily;
+
   var dailyContainer = createDivEl(
-    "d-flex flex-row justify-content-around day",
+    "d-flex flex-row justify-content-around",
     ""
   );
+
+  if (nightDay === 0) {
+    dailyContainer.classList.add("night");
+  } else {
+    dailyContainer.classList.add("day");
+  }
 
   for (var i = 1; i < 6; i++) {
     var forecastDay = createDivEl("rounded p-3 m-2 tile");
