@@ -122,7 +122,6 @@ var displayWeather = function (weather, location) {
   var sunset = weather.current.sunset;
   var nightDay = nightOrDay(sunrise, sunset, current.dt);
 
-  console.log(nightDay);
   if (nightDay === 0) {
     todayEl.classList.add("night");
   } else {
@@ -153,7 +152,7 @@ var displayWeather = function (weather, location) {
   );
 
   var uv = createDivEl(
-    "p-2 m-2 rounded fs-3 border",
+    "p-2 m-2 rounded fs-3 border border-5",
     "<i class='bi bi-rainbow'></i>   " + current.uvi
   );
 
@@ -212,7 +211,6 @@ var displayWeather = function (weather, location) {
   todayEl.appendChild(temp);
   todayEl.appendChild(details);
   todayEl.appendChild(hourlyContainer);
-  console.log(nightDay);
   displayForecast(weather, nightDay);
 };
 
@@ -221,7 +219,6 @@ var displayWeather = function (weather, location) {
 // ===========DISPLAY 5 DAY FORECAST================
 
 var displayForecast = function (weather, nightDay) {
-  console.log(nightDay);
   var daily = weather.daily;
 
   var dailyContainer = createDivEl(
