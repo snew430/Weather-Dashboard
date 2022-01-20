@@ -7,6 +7,8 @@ var previousCities = document.querySelector("#previous-cities");
 
 dayDisplay.textContent = moment().format("MMM Do YY");
 
+var previousCitySearch = [];
+
 // ============GET THE COORDINATES FOR THE ENTERED CITY==============
 var getCoordinates = function (location) {
   var coordUrl =
@@ -19,6 +21,7 @@ var getCoordinates = function (location) {
       response.json().then(function (data) {
         searchWeather(data.coord.lon, data.coord.lat, data.name);
         saveCity(data.coord.lon, data.coord.lat, data.name);
+        createCity(data.coord.lon, data.coord.lat, data.name);
       });
     } else {
       alert("Sorry, I did not recognize that city.");
@@ -285,14 +288,49 @@ var formSubmitHandler = function (event) {
 };
 // ==========================================================
 
-// ============SAVE CITY INFO===============
+// ============CREATE CITY DIV===============
 
-var saveCity = function (long, lat, location) {
+var createCity = function (long, lat, location) {
   var newCity = createDivEl("bg-info p-3 fs-3 text-center mt-1 mb-1 previous");
   newCity.setAttribute("data-long", long);
   newCity.setAttribute("data-lat", lat);
   newCity.textContent = location;
   previousCities.appendChild(newCity);
+};
+
+// ==========================================================
+
+// ============SAVE CITY INFO===============
+
+var saveCity = function (long, lat, location) {
+  var cityToSave = {
+    name: location,
+    longitude: long,
+    latitude: lat,
+  };
+  previousCitySearch.push(cityToSave);
+
+  localStorage.setItem("cities", JSON.stringify(previousCitySearch));
+};
+
+// ==========================================================
+
+// ============LOAD CITY INFO===============
+
+var loadCities = function () {
+  previousCitySearch = JSON.parse(localStorage.getItem("cities"));
+
+  if (!previousCitySearch) {
+    previousCitySearch = [];
+  } else {
+    for (var i = 0; i < previousCitySearch.length; i++) {
+      createCity(
+        previousCitySearch[i].longitude,
+        previousCitySearch[i].latitude,
+        previousCitySearch[i].name
+      );
+    }
+  }
 };
 
 // ==========================================================
@@ -312,3 +350,5 @@ var cityClickHandler = function (event) {
 
 cityFormEl.addEventListener("submit", formSubmitHandler);
 previousCities.addEventListener("click", cityClickHandler);
+
+loadCities();
