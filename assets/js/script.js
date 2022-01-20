@@ -34,7 +34,7 @@ var searchWeather = function (long, lat, city) {
     lat +
     "&lon=" +
     long +
-    "&units=imperial&appid=8a42d43f7d7dc180da5b1e51890e67dc";
+    "&exclude=minutely,alerts&units=imperial&appid=8a42d43f7d7dc180da5b1e51890e67dc";
 
   fetch(apiUrl).then(function (response) {
     if (response.ok) {
@@ -173,17 +173,19 @@ var displayWeather = function (weather, location) {
   );
 
   for (var i = 1; i < 9; i++) {
-    var forecastHour = createDivEl("p-2 m-2 rounded");
+    if (i > 4) {
+      var forecastHour = createDivEl("d-none d-md-block p-2 m-2 rounded ");
+    } else {
+      var forecastHour = createDivEl("p-2 m-2 rounded");
+    }
 
     var timeStamp = new Date(hourly[i].dt * 1000);
     var hour = timeStamp.getHours();
 
-    nightDay = nightOrDay(sunrise, sunset, hourly[i].dt);
     icon = weatherIcon(hourly[i].weather[0].id, nightDay);
 
     var hourlyTemp = Math.round(hourly[i].temp);
-    console.log(hour);
-    
+
     if (hour > 0 && hour < 12) {
       var displayTime = hour + "AM";
     } else if (hour >= 12) {
@@ -210,7 +212,7 @@ var displayWeather = function (weather, location) {
   todayEl.appendChild(temp);
   todayEl.appendChild(details);
   todayEl.appendChild(hourlyContainer);
-
+  console.log(nightDay);
   displayForecast(weather, nightDay);
 };
 
@@ -219,6 +221,7 @@ var displayWeather = function (weather, location) {
 // ===========DISPLAY 5 DAY FORECAST================
 
 var displayForecast = function (weather, nightDay) {
+  console.log(nightDay);
   var daily = weather.daily;
 
   var dailyContainer = createDivEl(
