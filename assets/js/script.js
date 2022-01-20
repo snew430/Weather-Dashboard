@@ -188,7 +188,11 @@ var displayWeather = function (weather, location) {
     if (hour > 0 && hour < 12) {
       var displayTime = hour + "AM";
     } else if (hour >= 12) {
-      var displayTime = hour - 12 + "PM";
+      hour = hour - 12;
+      if (hour === 0) {
+        hour = 12;
+      }
+      var displayTime = hour + "PM";
     } else if (hour === 0) {
       var displayTime = "12AM";
     }
