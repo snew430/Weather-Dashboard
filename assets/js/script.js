@@ -291,6 +291,11 @@ var formSubmitHandler = function (event) {
 // ============CREATE CITY DIV===============
 
 var createCity = function (long, lat, location) {
+  for (var i = 0; i < previousCities.children.length; i++) {
+    if (location === previousCities.children[i].textContent) {
+      return;
+    }
+  }
   var newCity = createDivEl("bg-info p-3 fs-3 text-center mt-1 mb-1 previous");
   newCity.setAttribute("data-long", long);
   newCity.setAttribute("data-lat", lat);
