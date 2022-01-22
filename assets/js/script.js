@@ -130,6 +130,7 @@ var displayWeather = function (weather, location) {
   } else {
     todayEl.classList.add("day");
   }
+  console.log(weather);
 
   // pass which icon to use
   var icon = weatherIcon(current.weather[0].id, nightDay);
@@ -140,13 +141,15 @@ var displayWeather = function (weather, location) {
   );
   var temp = createDivEl(
     "p-2 m-2 rounded w-50 fs-1",
-    "<i class='bi bi-thermometer-half'></i>" + Math.round(current.temp)
+    "<i class='bi bi-thermometer-half'></i>" +
+      Math.round(current.temp) +
+      "\xB0 F"
   );
   var details = createDivEl("d-flex flex-row justify-content-around w-100", "");
 
   var wind = createDivEl(
     "p-2 m-2 rounded fs-3",
-    "<i class='bi bi-wind'></i>   " + current.wind_speed
+    "<i class='bi bi-wind'></i>   " + current.wind_speed + " mph"
   );
 
   var humidity = createDivEl(
@@ -242,17 +245,20 @@ var displayForecast = function (weather, nightDay) {
   for (var i = 1; i < 6; i++) {
     var forecastDay = createDivEl("rounded p-3 m-2 tile");
     var dayStamp = new Date(daily[i].dt * 1000);
-    var day = dayStamp.getDate();
+    var dateString = dayStamp.toDateString().slice(0, -5);
 
     var dailyTemp =
-      Math.round(daily[i].temp.min) + " - " + Math.round(daily[i].temp.max);
+      Math.round(daily[i].temp.min) +
+      " - " +
+      Math.round(daily[i].temp.max) +
+      "\xB0 F";
     var dailyWind = daily[i].wind_speed;
     var dailyHumidity = daily[i].humidity;
 
     icon = weatherIcon(daily[i].weather[0].id, 1);
 
     forecastDay.innerHTML =
-      day +
+      dateString +
       "</br>" +
       icon +
       "</br><i class='bi bi-thermometer-half'></i>" +
