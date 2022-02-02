@@ -10,11 +10,12 @@ Be prepared for any weather conditions with this weather app.  See the Temperatu
 
 ## Link
 
-https://snew430.github.io/Weather-Dashboard/
+https://snew430.github.io/Your-Daily-Weather/
 
 ## Screenshot
 
-![Screen Shot 2022-01-17 at 3 16 38 PM](https://user-images.githubusercontent.com/93355113/149832348-c0b4e108-ec02-44f3-af55-801ae0b570a3.png)
+![Screen Shot 2022-02-02 at 10 22 38 AM](https://user-images.githubusercontent.com/93355113/152183279-fea25f07-1cb1-4e72-ac66-e6eb5297e641.png)
+
 
 ## Contribution
 
