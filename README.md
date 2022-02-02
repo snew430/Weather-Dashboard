@@ -1,4 +1,4 @@
-# Weather-Dashboard
+# Your Daily Weather
 ## Purpose
 
 Be prepared for any weather conditions with this weather app.  See the Temperature of the day along with the wind speed, humidity, and uv index.  The uv index will change border colors depending how bad the conditions are.  You can also see the hourly and daily forecast!
